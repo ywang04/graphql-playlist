@@ -5,12 +5,13 @@ import { getAuthorsQuery } from './queries/queries';
 const AddBook = () => {
   const [bookName, setBookName] = useState('');
   const [genre, setGenre] = useState('');
+  const [authorId, setAuthorId] = useState('');
   const { data } = useQuery(getAuthorsQuery);
-  const handleClick = e => {
+  const handleSubmit = e => {
     e.preventDefault();
   };
   return (
-    <form id="add-book">
+    <form id="add-book" onSubmit={handleSubmit}>
       <div className="field">
         <label>Book name:</label>
         <input
@@ -31,15 +32,17 @@ const AddBook = () => {
 
       <div className="field">
         <label>Author:</label>
-        <select>
+        <select onChange={e => setAuthorId(e.target.value)}>
           <option>Select author</option>
-          {data?.authors.map(({ name, id }) => {
-            return <option key={id}>{name}</option>;
-          })}
+          {data?.authors.map(({ name, id }) => (
+            <option key={id} value={id}>
+              {name}
+            </option>
+          ))}
         </select>
       </div>
 
-      <button onClick={handleClick}>+</button>
+      <button>+</button>
     </form>
   );
 };
