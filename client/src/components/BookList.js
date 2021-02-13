@@ -7,6 +7,7 @@ const BookList = () => {
       books {
         name
         genre
+        id
       }
     }
   `);
@@ -15,8 +16,8 @@ const BookList = () => {
 
   return (
     <ul id="book-list">
-      {data?.books.map(({ name }) => {
-        return <li>{name}</li>;
+      {data?.books.map(({ name, id }) => {
+        return <li key={id}>{name}</li>;
       })}
     </ul>
   );
