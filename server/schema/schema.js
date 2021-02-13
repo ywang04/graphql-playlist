@@ -70,6 +70,47 @@ const BookType = new GraphQLObjectType({
 });
 
 /**
+ The purpose of mutation is to add/delete/edit data from graphql
+ */
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addAuthor: {
+      type: AuthorType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        age: { type: new GraphQLNonNull(GraphQLInt) },
+      },
+      resolve(parent, args) {
+        const { name, age } = { ...args };
+        const author = new Author({
+          name,
+          age,
+        });
+        return author.save();
+      },
+    },
+    addBook: {
+      type: BookType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        genre: { type: new GraphQLNonNull(GraphQLString) },
+        authorId: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args) {
+        const { name, genre, authorId } = { ...args };
+        const book = new Book({
+          name,
+          genre,
+          authorId,
+        });
+        return book.save();
+      },
+    },
+  },
+});
+
+/**
  1. fields: put various entry point into that
  2. React client query like this 
  book(id: '2') {
@@ -111,47 +152,6 @@ const RootQuery = new GraphQLObjectType({
       resolve() {
         // return authors;
         return Author.find();
-      },
-    },
-  },
-});
-
-/**
- The purpose of mutation is to add/delete/edit data from graphql
- */
-const Mutation = new GraphQLObjectType({
-  name: 'Mutation',
-  fields: {
-    addAuthor: {
-      type: AuthorType,
-      args: {
-        name: { type: new GraphQLNonNull(GraphQLString) },
-        age: { type: new GraphQLNonNull(GraphQLInt) },
-      },
-      resolve(parent, args) {
-        const { name, age } = { ...args };
-        const author = new Author({
-          name,
-          age,
-        });
-        return author.save();
-      },
-    },
-    addBook: {
-      type: BookType,
-      args: {
-        name: { type: new GraphQLNonNull(GraphQLString) },
-        genre: { type: new GraphQLNonNull(GraphQLString) },
-        authorId: { type: new GraphQLNonNull(GraphQLID) },
-      },
-      resolve(parent, args) {
-        const { name, genre, authorId } = { ...args };
-        const book = new Book({
-          name,
-          genre,
-          authorId,
-        });
-        return book.save();
       },
     },
   },
