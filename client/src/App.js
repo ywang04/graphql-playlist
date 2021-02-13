@@ -1,15 +1,19 @@
-import { useEffect } from 'react';
+import { ApolloClient, ApolloProvider } from '@apollo/client';
 import BookList from './components/BookList';
 
-function App() {
-  useEffect(() => {
+// apollo client setup
+const client = new ApolloClient({
+  uri: 'http://localhost:4000/graphql',
+});
 
-  });
+function App() {
   return (
-    <div id="main">
-      <h1>Yang's Reading List</h1>
-      <BookList bookList={bookList} />
-    </div>
+    <ApolloProvider client={client}>
+      <div id="main">
+        <h1>Yang's Reading List</h1>
+        <BookList bookList={bookList} />
+      </div>
+    </ApolloProvider>
   );
 }
 
