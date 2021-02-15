@@ -19,7 +19,7 @@ const getAuthorsQuery = gql`
   }
 `;
 
-// It seems like ! means to omit GraphQL
+// It seems like ! means required
 const addBookMutation = gql`
   mutation AddBook($name: String!, $genre: String!, $authorId: ID!) {
     addBook(name: $name, genre: $genre, authorId: $authorId) {
