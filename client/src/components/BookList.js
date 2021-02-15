@@ -1,18 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
+import BookDetails from './BookDetails';
 import { useQuery } from '@apollo/client';
-import { getBooksQuery } from './queries/queries';
+import { getBooksQuery } from '../queries/queries';
 
 const BookList = () => {
-  const { loading, error, data } = useQuery(getBooksQuery);
+  const [selectedId, setSelectedId] = useState(null);
+  const { loading, error, data: dataBooks } = useQuery(getBooksQuery);
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error :(</p>;
 
+  const handleClick = id => () => {
+    setSelectedId(id);
+  };
+
   return (
-    <ul id="book-list">
-      {data?.books.map(({ name, id }) => {
-        return <li key={id}>{name}</li>;
-      })}
-    </ul>
+    <div>
+      <ul id="book-list">
+        {dataBooks?.books.map(({ id, name }) => (
+          <li key={id} onClick={handleClick(id)}>
+            {name}
+          </li>
+        ))}
+      </ul>
+      <BookDetails bookId={selectedId} />
+    </div>
   );
 };
 
